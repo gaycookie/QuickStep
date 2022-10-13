@@ -1,0 +1,10 @@
+name      = "Quickstep";
+picture   = ""; // Mods/TestMod/modpic.tga
+logoSmall = ""; // Mods/TestMod/modlogosmall.tga
+logo      = ""; // Mods/TestMod/modlogo.tga
+logoOver  = ""; // Mods/TestMod/modlogohover.tga
+tooltip   = "Yet another way to auto run!";
+overview  = "Yet another way to auto run!";
+action    = "https://github.com/gaycookie";
+author    = "GayCookie";
+version   = "0.1";
