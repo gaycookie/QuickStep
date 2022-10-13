@@ -19,7 +19,7 @@
 		<input name="QSEnableAutoRun">
 			<btn name="kLShift">
 				<btn name="kAdd" />
-    			</btn>
+			</btn>
 		</input>
 	</preset>
 </modded_inputs>
