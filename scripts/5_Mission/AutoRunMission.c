@@ -4,60 +4,49 @@ modded class MissionGameplay {
 	override void OnUpdate(float timeslice) {
 		super.OnUpdate(timeslice);
 
-		Input input = GetGame().GetInput();
 		if (GetGame().GetUIManager().GetMenu() == NULL) {
+			Input input = GetGame().GetInput();
+			PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
 
 			if (input.LocalPress("QSEnableAutoRun")) {
 				autoRunState = !autoRunState;
 
-				if (!autoRunState) stopAutoRun();
-				else startAutoRun(3);
+				if (autoRunState) updateMovement(player, 3, 1);
+				else updateMovement(player, 0, 0);
 				return
 			}
 
 			if (input.LocalPress("QSEnableAutoWalk")) {
 				autoRunState = !autoRunState;
 
-				if (!autoRunState) stopAutoRun();
-				else startAutoRun(1);
+				if (autoRunState) updateMovement(player, 1, 1);
+				else updateMovement(player, 0, 0);
 				return
 			}
 
 			if (input.LocalPress("QSEnableAutoJog")) {
 				autoRunState = !autoRunState;
-
-				if (!autoRunState) stopAutoRun();
-				else startAutoRun(2);
+				
+				if (autoRunState) updateMovement(player, 2, 1);
+				else updateMovement(player, 0, 0);
 				return
 			}
 
 			if (input.LocalPress("UAMoveForward") || input.LocalPress("UAMoveBack") || input.LocalPress("UAMoveLeft") || input.LocalPress("UAMoveRight")) {
-				if (autoRunState == true) {
+				if (autoRunState) {
 					autoRunState = false;
-					stopAutoRun();
+					updateMovement(player, 0, 0)
 				}
 			}
 		}
 	}
 
-	void startAutoRun(int speed) {
-		PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
-		player.GetInputController().OverrideMovementSpeed(true, speed);
-		player.GetInputController().OverrideMovementAngle(true, 1);
+	void updateMovement(PlayerBase player, int speed, int angle) {
+		player.GetInputController().OverrideMovementSpeed(autoRunState, speed);
+		player.GetInputController().OverrideMovementAngle(autoRunState, angle);
 
 		if (GetGame().IsMultiplayer()) {
-			auto params = new Param2<bool, int>(autoRunState, speed);
-			GetGame().RPCSingleParam(player, -77777, params, true);
-		}
-	}
-
-	void stopAutoRun() {
-		PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
-		player.GetInputController().OverrideMovementSpeed(false, 0);
-		player.GetInputController().OverrideMovementAngle(false, 0);
-
-		if (GetGame().IsMultiplayer()) {
-			auto params = new Param2<bool, int>(autoRunState, 0);
+			auto params = new Param3<bool, int, int>(autoRunState, speed, angle);
 			GetGame().RPCSingleParam(player, -77777, params, true);
 		}
 	}

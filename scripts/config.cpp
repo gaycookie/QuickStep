@@ -8,7 +8,7 @@ class CfgMods {
   class QuickStep {
     type = "mod";
     name = "QuickStep";
-    version = "0.2";
+    version = "0.3";
     hidePicture = 1;
     inputs = "QuickStep\data\inputs.xml";
     author = "GayCookie";

@@ -1,25 +1,17 @@
 modded class PlayerBase extends ManBase {
   override void OnRPC(PlayerIdentity sender, int rpc_type, ParamsReadContext ctx) {
     if (rpc_type == -77777) {
-      Param2<bool, int> AutoRunParams;
+      Param3<bool, int, int> AutoRunParams;
       if(!ctx.Read(AutoRunParams)) return;
 
-      bool RunInServer = AutoRunParams.param1;
-      int AutoRunSpeed = AutoRunParams.param2;
+      bool isAutoRun = AutoRunParams.param1;
+      int autoRunSpeed = AutoRunParams.param2;
+      int autoRunAngle = AutoRunParams.param3;
     
-      ServerAutoRun(RunInServer, AutoRunSpeed);
+      this.GetInputController().OverrideMovementSpeed(isAutoRun, autoRunSpeed);
+      this.GetInputController().OverrideMovementAngle(isAutoRun, autoRunAngle);
     }
 
     super.OnRPC(sender, rpc_type, ctx);
-  }
-
-  void ServerAutoRun(bool RunInServer, int speed) {
-    if (RunInServer) {
-      this.GetInputController().OverrideMovementSpeed(true, speed);
-      this.GetInputController().OverrideMovementAngle(true, 1);
-    } else {
-      this.GetInputController().OverrideMovementSpeed(false, 0);
-      this.GetInputController().OverrideMovementAngle(false, 0);
-    }
   }
 }
